@@ -1,0 +1,8 @@
+.auth-container{
+    background-image: url(./assets/images/auth.jfif);
+    background-position: center center;
+    background-size: cover;
+}
+.bg-overlay{
+    background:linear-gradient(45deg,rgba(47,140,96,0.7) ,rgba(0,0,0,0.5))
+}
