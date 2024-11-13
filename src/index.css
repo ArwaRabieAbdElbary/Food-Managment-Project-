@@ -6,3 +6,55 @@
 .bg-overlay{
     background:linear-gradient(45deg,rgba(47,140,96,0.7) ,rgba(0,0,0,0.5))
 }
+.sideBar-container{
+    background-color: rgba(31, 38, 62, 1);
+}
+.sideBar-container .ps-sidebar-container{
+    background-color: rgba(31, 38, 62, 1);
+    border-radius: 0 50px 0 0;
+}
+.sideBar-container  .ps-menu-button{
+    color: white !important;
+}
+.sideBar-container  .ps-menu-button:hover{
+    background-color: rgba(47,140,96,0.5) !important;
+}
+.sideBar-container .sideBar-img .css-wx7wi4{
+    width: 500px;   
+}
+.sideBar-container .sideBar-img img{
+    width: 50%;
+}
+.sideBar-container .sideBar-img .ps-menu-button:hover{
+    background-color: transparent !important; 
+}
+.css-1wvake5{
+    border-right-width: 0px !important;
+}
+.navbar-container{
+    background-color:rgba(248, 249, 251, 1);
+    margin-top: 20px;
+    border-radius: 15px !important;
+}
+.navbar-container .navbar-img{
+    background: rgba(244, 206, 155, 1);
+    border-radius: 50%;
+}
+.navbar-container .navbar-search input{
+
+    height: 30px;
+}
+input::placeholder{
+    color: rgb(88, 93, 109) !important;
+}
+.header-container{
+    background-image: url(./assets/images/Header2.jpg);
+    background-size: cover;
+    border-radius: 20px;
+}
+.header-container .header-caption span{
+    font-size: 40px;
+}
+.header-container .header-caption p{
+    width: 70%;
+}

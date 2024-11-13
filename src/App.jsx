@@ -1,12 +1,10 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { useEffect, useState } from 'react'
 import './App.css'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import AuthLayout from './assets/modules/shared/components/AuthLayout/AuthLayout'
 import Login from './assets/modules/authentication/components/login/Login'
 import Register from './assets/modules/authentication/components/register/Register'
-import ForgetPass from './assets/modules/authentication/components/forgetPass/ForgetPass'
+import ForgetPass from './assets/modules/authentication/components/forgetPassword/ForgetPass'
 import ChangePass from './assets/modules/authentication/components/changePass/ChangePass'
 import Resetpass from './assets/modules/authentication/components/resetPass/Resetpass'
 import NotFound from './assets/modules/shared/components/NotFound/NotFound'
@@ -19,16 +17,34 @@ import CategoriesData from './assets/modules/categories/components/categoriesDat
 import UsersList from './assets/modules/users/components/usersList/UsersList'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { jwtDecode } from 'jwt-decode'
+import ProtectedComponent from './assets/modules/shared/components/ProtectedComponent/ProtectedComponent'
+
+
 
 function App() {
+  const[loginData , setLoginData] = useState(null)
+
+  const saveLoginData =() => {
+    const encodedToken = localStorage.getItem('token')
+    const decodedToken = jwtDecode(encodedToken)
+    setLoginData(decodedToken)
+  }
+
+  useEffect(() => {
+    if (localStorage.getItem('token'))
+      saveLoginData();
+  }, [])
+  
+ 
   const routes = createBrowserRouter([
     {
       path: '',
       element: <AuthLayout />,
       errorElement: <NotFound />,
       children:[
-        {index:true,element:<Login />},
-        {path:'login',element:<Login />},
+        {index:true,element:<Login saveLoginData={saveLoginData} />},
+        {path:'login',element:<Login saveLoginData={saveLoginData} />},
         {path:'register',element:<Register />},
         {path:'forget-pass',element:<ForgetPass />},
         {path:'change-pass',element:<ChangePass />},
@@ -37,10 +53,14 @@ function App() {
     },
     {
       path: 'dashboard',
-      element: <MasterLayout />,
+      element:(
+        <ProtectedComponent loginData={loginData}>
+            <MasterLayout loginData={loginData}/>
+        </ProtectedComponent>
+      ) ,
       errorElement: <NotFound />,
       children:[
-        {index:true,element:<Dashboard />},
+        {index:true,element:<Dashboard loginData={loginData} />},
         {path:'recipes',element:<RecipesList />},
         {path:'recipe-data',element:<RecipeData />},
         {path:'categories',element:<CategoriesList />},

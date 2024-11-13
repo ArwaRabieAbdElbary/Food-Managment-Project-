@@ -8,12 +8,16 @@ import { toast } from 'react-toastify';
 
 const Resetpass = () => {
   let navigate = useNavigate()
+  
 
   let{
     register,
     formState:{errors},
+    watch,
     handleSubmit,
   }=useForm()
+
+  let password = watch("password");
 
   const onSubmit = async (data) =>{
     try {
@@ -47,7 +51,7 @@ const Resetpass = () => {
                       <span className="input-group-text" id="basic-addon1">
                         <i className='fa fa-envelope text-muted'></i>
                       </span>
-                      <input type="text"
+                      <input type="email"
                         className="form-control"
                         placeholder="Email"
                         aria-label="email"
@@ -106,6 +110,8 @@ const Resetpass = () => {
                     aria-describedby="basic-addon1" 
                     {...register('confirmPassword',{
                       required: 'Please confirm your password',
+                      validate: (value) =>
+                        value === password || "Passwords do not match",
                     })}
                     />
                 </div>

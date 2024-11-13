@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form'
 import axios from 'axios'
 import { toast } from 'react-toastify';
 
-const Login = () => {
+const Login = ({saveLoginData}) => {
   let navigate = useNavigate()
 
   let{
@@ -17,11 +17,11 @@ const Login = () => {
   const onSubmit = async (data) =>{
     try {
       let response = await axios.post("https://upskilling-egypt.com:3006/api/v1/Users/Login" , data)
-      console.log(response)
       navigate('/dashboard')
       toast.success('Login Successfully')
+      localStorage.setItem('token',response.data.token)
+      saveLoginData()
 
-      
     } catch (error) {
       toast.error(error.response.data.message)
       
@@ -83,7 +83,8 @@ const Login = () => {
                       <Link to='/register' className='text-decoration-none text-black'>Register Now?</Link>
                       <Link to='/forget-pass' className='text-decoration-none text-success'>Forgot Password?</Link>
                     </div>
-                    <button className='btn btn-success w-100 my-4'>Login</button>
+                    <button className='btn btn-success w-100 my-4'>
+                    Login</button>
                  
                  </form>
                  
