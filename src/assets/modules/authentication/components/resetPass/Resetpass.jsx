@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import logo from '../../../../images/logo.png'
 import { useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
@@ -7,15 +7,19 @@ import { toast } from 'react-toastify';
 
 
 const Resetpass = () => {
+  const [passwordVisibleOne ,setpasswordVisibleOne] =useState(false)
+  const [passwordVisibleTwo ,setPasswordVisibleTwo] =useState(false)
+
   let navigate = useNavigate()
   
-
   let{
     register,
     formState:{errors},
     watch,
     handleSubmit,
-  }=useForm()
+  }=useForm(
+    {defaultValues:{email:location.state}}
+  )
 
   let password = watch("password");
 
@@ -87,7 +91,7 @@ const Resetpass = () => {
                     <span className="input-group-text" id="basic-addon1">
                       <i className='fa fa-key text-muted'></i>
                     </span>
-                    <input type="password"
+                    <input type={passwordVisibleOne? "text" : "password" }
                       className="form-control"
                       placeholder="New Password"
                       aria-label="password"
@@ -96,6 +100,15 @@ const Resetpass = () => {
                         required: 'Please enter password',
                       })}
                       />
+                    <button type='button'
+                    onMouseDown={(e) => e.preventDefault()}
+                    onMouseUp={(e) => e.preventDefault()}
+                    onClick={()=> (setpasswordVisibleOne(!passwordVisibleOne))}
+                     className="input-group-text"
+                      id="basic-addon1">
+                      {passwordVisibleOne?<i className='fa-solid fa-eye-slash text-muted'></i> :
+                        <i className='fa-solid fa-eye text-muted'></i>}
+                    </button>
                   </div>
                   {errors.password&&<span className="text-danger">{errors.password.message}</span>}
 
@@ -103,7 +116,7 @@ const Resetpass = () => {
                   <span className="input-group-text" id="basic-addon1">
                     <i className='fa fa-key text-muted'></i>
                   </span>
-                  <input type="password"
+                  <input type={passwordVisibleTwo? "text" : "password" }
                     className="form-control"
                     placeholder="Confirm New Password"
                     aria-label="password"
@@ -114,6 +127,15 @@ const Resetpass = () => {
                         value === password || "Passwords do not match",
                     })}
                     />
+                    <button type='button'
+                    onMouseDown={(e) => e.preventDefault()}
+                    onMouseUp={(e) => e.preventDefault()}
+                    onClick={()=>( setPasswordVisibleTwo(!passwordVisibleTwo))}
+                     className="input-group-text"
+                      id="basic-addon1">
+                      {passwordVisibleTwo?<i className='fa-solid fa-eye-slash text-muted'></i> :
+                        <i className='fa-solid fa-eye text-muted'></i>}
+                    </button>
                 </div>
                 {errors.confirmPassword&&<span className="text-danger">{errors.confirmPassword.message}</span>}
                     

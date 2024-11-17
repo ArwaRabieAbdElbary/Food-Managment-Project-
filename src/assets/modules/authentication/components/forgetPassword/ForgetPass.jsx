@@ -11,7 +11,7 @@ const ForgetPass = () => {
 
   let{
     register,
-    formState:{errors},
+    formState:{errors,isSubmitting},
     handleSubmit,
   }=useForm()
 
@@ -19,8 +19,8 @@ const ForgetPass = () => {
     try {
       let response = await axios.post("https://upskilling-egypt.com:3006/api/v1/Users/Reset/Request" , data)
       console.log(response)
-      navigate('/reset-pass')
-      toast.success('Please check your email')
+      navigate('/reset-password' ,{state:data.email} )
+      toast.success(response?.data?.message||'Please check your email')
     
     } catch (error) {
       toast.error(error.response.data.message) 
@@ -61,7 +61,9 @@ const ForgetPass = () => {
                     </div>
                     {errors.email&&<span className="text-danger">{errors.email.message}</span>}
                     
-                    <button className='btn btn-success w-100 my-5'>Submit</button>
+                    <button disabled={isSubmitting} className='btn btn-success w-100 my-5'>
+                    {isSubmitting?"submitting ..." : "submit"}
+                    </button>
                  
                  </form>
                  

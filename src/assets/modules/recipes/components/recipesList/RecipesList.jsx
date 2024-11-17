@@ -1,11 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import Header from '../../../shared/components/Header/Header'
-import ItemDetails from '../../../shared/components/ItemDetails/ItemDetails'
 import axios from 'axios'
-import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal';
-import confirmationLogo from '../../../../../assets/images/confirmdelete.svg'
 import DeleteConfirmation from '../../../shared/components/DeleteConfirmation/DeleteConfirmation';
+import NoData from '../../../shared/components/NoData/NoData';
 
 const RecipesList = () => {
   const[selecteId,setSelectedId] = useState(0)
@@ -54,14 +51,23 @@ const RecipesList = () => {
   useEffect(() =>{
     getrecipeItems();
 
-  });
+  },[]);
   return (
     <div>
        <Header first={"Recipes"}
        title={"  Items"}
        description={"You can now add your items that any user can order it from the Application and you can edit"}
         />
-        <ItemDetails items={"Recipe"} item={"item"} />
+
+        <div className=" d-flex justify-content-between my-4">
+          <div>
+              <h3>Categories Table Details</h3>
+              <p className=''>You can check all details</p>
+          </div>
+          <div>
+              <button className='btn btn-success' onClick={handleShow}>Add New category</button>
+          </div>
+        </div>
 
         <DeleteConfirmation deleteItem={"Recipe"} deleteFun={deleteReceipe}
         show={show} handleClose={handleClose} />
@@ -71,7 +77,7 @@ const RecipesList = () => {
         <div className='table'>
         <table className="table">
         <thead>
-          <tr>
+          <tr className='row-table'>
             <th scope='col'>Item Name</th>
             <th scope="col">Image</th>
             <th scope="col">Price</th>
@@ -82,21 +88,24 @@ const RecipesList = () => {
           </tr>
         </thead>
         <tbody>
-        {recipeItems.map(item =>
-          <tr>
+        {recipeItems.length > 0 ?( recipeItems.map(item =>
+          <tr key={item.id}>
             <td>{item.name}</td>
-            <td><img src={`https://upskilling-egypt.com:3006/${item.imagePath}`} className='w-25 h-25' /></td>
+            <td><img src={`https://upskilling-egypt.com:3006/${item.imagePath}`} className='w-25' /></td>
             <td>{item.price}</td>
             <td>{item.description}</td>
             <td>{item.tag.name}</td>
-            <td>{item.category}</td>
+            <td>{item.category?.name}</td>
             <td className='text-success'>
             <i className="fa-solid fa-eye"></i>
             <i className='fa fa-edit mx-3'></i>
             <i className='fa fa-trash' onClick={() =>handleShow(item.id)}></i>
          </td>
           </tr>
-        )}
+        )) : (
+          <NoData />
+        )
+      }
 
         
         </tbody>

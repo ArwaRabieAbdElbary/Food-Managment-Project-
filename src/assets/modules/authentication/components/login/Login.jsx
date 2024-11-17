@@ -81,7 +81,7 @@ const Login = ({saveLoginData}) => {
                     
                     <div className='links d-flex justify-content-between'>
                       <Link to='/register' className='text-decoration-none text-black'>Register Now?</Link>
-                      <Link to='/forget-pass' className='text-decoration-none text-success'>Forgot Password?</Link>
+                      <Link to='/forget-password' className='text-decoration-none text-success'>Forgot Password?</Link>
                     </div>
                     <button className='btn btn-success w-100 my-4'>
                     Login</button>

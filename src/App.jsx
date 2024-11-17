@@ -46,9 +46,9 @@ function App() {
         {index:true,element:<Login saveLoginData={saveLoginData} />},
         {path:'login',element:<Login saveLoginData={saveLoginData} />},
         {path:'register',element:<Register />},
-        {path:'forget-pass',element:<ForgetPass />},
-        {path:'change-pass',element:<ChangePass />},
-        {path:'reset-pass',element:<Resetpass />},
+        {path:'forget-password',element:<ForgetPass />},
+        {path:'change-password',element:<ChangePass />},
+        {path:'reset-password',element:<Resetpass />},
       ]
     },
     {
