@@ -1,0 +1,43 @@
+.fill-recipe{
+    background: rgba(240, 255, 239, 1);
+    margin-top:30px ;
+    align-items: center;
+    margin-inline: 0.3rem;
+    padding: 30px;
+    border-radius: 16px;
+}
+.fill-content h3{
+    font-size: 24px;
+    font-weight: 500;
+    color: rgba(31, 38, 62, 1);
+}
+.fill-content h3 span{
+    color: rgba(0, 146, 71, 1);
+    font-weight: 600;
+}
+.fill-content p{
+    font-weight:400 ;
+    font-size: 16px;
+    color: rgba(31, 38, 62, 1);
+    max-width: 75%;
+}
+.fill-btn svg{
+    padding-left: 5px;
+}
+.recipe-form{
+    margin: auto;
+}
+.form-control:focus{
+    background: none;
+}
+.recipe-form input,
+.recipe-form select,
+.recipe-form textarea{
+    background: rgba(247, 247, 247, 1);
+}
+.form-btn{
+    margin-top: 20px;
+    display: flex;
+    justify-content:flex-end ;
+    gap: 50px;
+}

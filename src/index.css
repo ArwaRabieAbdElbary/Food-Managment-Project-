@@ -6,12 +6,35 @@
 .bg-overlay{
     background:linear-gradient(45deg,rgba(47,140,96,0.7) ,rgba(0,0,0,0.5))
 }
+.auth-container.register-form{
+    background-image: none;
+    background: linear-gradient(51.22deg, rgba(55, 140, 47, 0.63) -22.39%, rgba(0, 0, 0, 0.6237) 61.76%);
+}
+
+.auth-container form .input-group,
+.auth-container form input{
+    border: 1px solid rgba(247, 247, 247, 1);
+    background-color: rgba(247, 247, 247, 1);  
+    border-radius: 10px
+}
+.auth-container form .input-group-text{
+    border: none;
+    border-right: 2px solid grey !important;;
+}
+.input-group .input-group-text.eye-btn{
+    border: none !important;
+}
 .sideBar-container{
     background-color: rgba(31, 38, 62, 1);
+    border-top-right-radius: 50px;
+    align-self: flex-start;
+    position: sticky;
+    top: 0;
+    left: 0;
 }
 .sideBar-container .ps-sidebar-container{
     background-color: rgba(31, 38, 62, 1);
-    border-radius: 0 50px 0 0;
+    border-top-right-radius: 50px;
 }
 .sideBar-container  .ps-menu-button{
     color: white !important;
@@ -88,3 +111,6 @@ input::placeholder{
 .table thead th:last-child {
     border-top-right-radius: 10px; /* الزاوية العلوية اليمنى */
 }  
+.recipe-img{
+    width: 20%;
+}

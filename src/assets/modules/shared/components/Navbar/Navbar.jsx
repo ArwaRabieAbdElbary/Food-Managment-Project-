@@ -10,7 +10,7 @@ const Navbar = ({loginData}) => {
        <div className='navbar-text'>
            <img src={avatar} className='navbar-img mx-2' />
            <span>{loginData?.userName}</span>
-           <i className="fas fa-chevron-down mx-5"></i>
+           <i className="fas fa-chevron-down mx-2"></i>
            <i className="fas fa-bell mx-3"></i>
        </div>
 

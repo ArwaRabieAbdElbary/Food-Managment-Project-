@@ -3,6 +3,9 @@ import Header from '../../../shared/components/Header/Header'
 import axios from 'axios'
 import DeleteConfirmation from '../../../shared/components/DeleteConfirmation/DeleteConfirmation';
 import NoData from '../../../shared/components/NoData/NoData';
+import noData from '../../../../images/confirmdelete.svg'
+import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const RecipesList = () => {
   const[selecteId,setSelectedId] = useState(0)
@@ -22,13 +25,13 @@ const RecipesList = () => {
         }
       )
       toast.success("item deleted successfully")
+      getrecipeItems()
       
     } catch (error) {
       console.log(error);
       toast.error("Error deleting item")
       
     }
-
   }
 
 
@@ -61,11 +64,11 @@ const RecipesList = () => {
 
         <div className=" d-flex justify-content-between my-4">
           <div>
-              <h3>Categories Table Details</h3>
+              <h3>Recipe Table Details</h3>
               <p className=''>You can check all details</p>
           </div>
           <div>
-              <button className='btn btn-success' onClick={handleShow}>Add New category</button>
+              <Link to="/dashboard/recipes/recipe-form" className='btn btn-success' onClick={handleShow}>Add New Item</Link>
           </div>
         </div>
 
@@ -91,14 +94,25 @@ const RecipesList = () => {
         {recipeItems.length > 0 ?( recipeItems.map(item =>
           <tr key={item.id}>
             <td>{item.name}</td>
-            <td><img src={`https://upskilling-egypt.com:3006/${item.imagePath}`} className='w-25' /></td>
+            <td>
+            {item.imagePath ?(
+              <img src={`https://upskilling-egypt.com:3006/${item.imagePath}`} className='recipe-img' />
+            ):(
+              <img src={noData} className='recipe-img' />
+
+            )}
+
+            </td>
             <td>{item.price}</td>
             <td>{item.description}</td>
             <td>{item.tag.name}</td>
             <td>{item.category?.name}</td>
             <td className='text-success'>
             <i className="fa-solid fa-eye"></i>
-            <i className='fa fa-edit mx-3'></i>
+            <Link to={`/dashboard/recipes/${item?.id}`}>
+            <i className='fa fa-edit mx-1 text-success'></i>
+            </Link>
+
             <i className='fa fa-trash' onClick={() =>handleShow(item.id)}></i>
          </td>
           </tr>

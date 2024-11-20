@@ -19,6 +19,9 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { jwtDecode } from 'jwt-decode'
 import ProtectedComponent from './assets/modules/shared/components/ProtectedComponent/ProtectedComponent'
+import RecipeForm from './assets/modules/recipes/components/RecipeForm/RecipeForm'
+import Verify from './assets/modules/authentication/components/register/Verify'
+
 
 
 
@@ -46,6 +49,7 @@ function App() {
         {index:true,element:<Login saveLoginData={saveLoginData} />},
         {path:'login',element:<Login saveLoginData={saveLoginData} />},
         {path:'register',element:<Register />},
+        {path:'verify',element:<Verify />},
         {path:'forget-password',element:<ForgetPass />},
         {path:'change-password',element:<ChangePass />},
         {path:'reset-password',element:<Resetpass />},
@@ -62,6 +66,8 @@ function App() {
       children:[
         {index:true,element:<Dashboard loginData={loginData} />},
         {path:'recipes',element:<RecipesList />},
+        {path:'recipes/recipe-form',element:<RecipeForm />},
+        {path:'recipes/:recipeId',element:<RecipeForm />},
         {path:'recipe-data',element:<RecipeData />},
         {path:'categories',element:<CategoriesList />},
         {path:'category-data',element:<CategoriesData />},
