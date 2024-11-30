@@ -8,7 +8,6 @@ import { toast } from 'react-toastify';
 
 const Verify = () => {
 
-
   let navigate = useNavigate()
 
   let{
@@ -19,13 +18,11 @@ const Verify = () => {
 
   const onSubmit = async (data) =>{
     try {
-      let response = await axios.post("https://upskilling-egypt.com:3006/api/v1/Users/verify" , data)
+      let response = await axios.put("https://upskilling-egypt.com:3006/api/v1/Users/verify" , data)
       console.log(response)
-      navigate('/login' ,{state:data.email} )
+      navigate('/login')
       toast.success(response?.data?.message||'Done')
-   
-      
-    
+
     } catch (error) {
       toast.error(error.response.data.message) 
     }

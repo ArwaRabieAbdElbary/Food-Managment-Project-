@@ -1,7 +1,9 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import avatar from '../../../../images/avatar.png'
+import { AuthContext } from '../../../../context/AuthContext'
 
-const Navbar = ({loginData}) => {
+const Navbar = () => {
+  let{loginData} = useContext(AuthContext)
   return (
     <div className='navbar-container d-flex justify-content-between align-items-center px-4'>
        <div className='navbar-search'>

@@ -21,33 +21,23 @@ import { jwtDecode } from 'jwt-decode'
 import ProtectedComponent from './assets/modules/shared/components/ProtectedComponent/ProtectedComponent'
 import RecipeForm from './assets/modules/recipes/components/RecipeForm/RecipeForm'
 import Verify from './assets/modules/authentication/components/register/Verify'
+import FavoritesList from './assets/modules/Favorites/FavoritesList'
+import AdminProtectedComponent from './assets/modules/shared/components/ProtectedComponent/AdminProtectedComponent'
+import UserProtectedComponent from './assets/modules/shared/components/ProtectedComponent/UserProtectedComponent'
 
 
 
 
 function App() {
-  const[loginData , setLoginData] = useState(null)
 
-  const saveLoginData =() => {
-    const encodedToken = localStorage.getItem('token')
-    const decodedToken = jwtDecode(encodedToken)
-    setLoginData(decodedToken)
-  }
-
-  useEffect(() => {
-    if (localStorage.getItem('token'))
-      saveLoginData();
-  }, [])
-  
- 
   const routes = createBrowserRouter([
     {
       path: '',
       element: <AuthLayout />,
       errorElement: <NotFound />,
       children:[
-        {index:true,element:<Login saveLoginData={saveLoginData} />},
-        {path:'login',element:<Login saveLoginData={saveLoginData} />},
+        {index:true,element:<Login />},
+        {path:'login',element:<Login />},
         {path:'register',element:<Register />},
         {path:'verify',element:<Verify />},
         {path:'forget-password',element:<ForgetPass />},
@@ -58,20 +48,21 @@ function App() {
     {
       path: 'dashboard',
       element:(
-        <ProtectedComponent loginData={loginData}>
-            <MasterLayout loginData={loginData}/>
+        <ProtectedComponent >
+          <MasterLayout />
         </ProtectedComponent>
       ) ,
       errorElement: <NotFound />,
       children:[
-        {index:true,element:<Dashboard loginData={loginData} />},
+        {index:true,element:<Dashboard  />},
         {path:'recipes',element:<RecipesList />},
-        {path:'recipes/recipe-form',element:<RecipeForm />},
-        {path:'recipes/:recipeId',element:<RecipeForm />},
+        {path:'recipes/recipe-form',element:<AdminProtectedComponent><RecipeForm /></AdminProtectedComponent>},
+        {path:'recipes/:recipeId',element:<AdminProtectedComponent><RecipeForm /></AdminProtectedComponent>},
         {path:'recipe-data',element:<RecipeData />},
-        {path:'categories',element:<CategoriesList />},
-        {path:'category-data',element:<CategoriesData />},
-        {path:'users',element:<UsersList />},
+        {path:'favorites',element:<UserProtectedComponent><FavoritesList /></UserProtectedComponent>},
+        {path:'categories',element:<AdminProtectedComponent><CategoriesList /></AdminProtectedComponent>},
+        {path:'category-data',element:<AdminProtectedComponent><CategoriesData /></AdminProtectedComponent>},
+        {path:'users',element:<AdminProtectedComponent><UsersList /></AdminProtectedComponent>},
       ]
 
     }
@@ -81,7 +72,7 @@ function App() {
 
   return (
     <div>
-      <ToastContainer position="top-center" />
+      <ToastContainer position="top-center" autoClose={3000}/>
       <RouterProvider router={routes}></RouterProvider>
     </div>
 

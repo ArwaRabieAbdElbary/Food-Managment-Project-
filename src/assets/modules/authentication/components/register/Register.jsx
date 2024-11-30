@@ -24,8 +24,6 @@ const Register = () => {
       let response = await axios.post("https://upskilling-egypt.com:3006/api/v1/Users/Register" , data)
       navigate('/verify') 
       toast.success('Register done successfully')
-      localStorage.setItem('token',response.data.token)
-
     } catch (error) {
       toast.error(error.response?.data?.message)
       

@@ -6,17 +6,20 @@ import DeleteConfirmation from '../../../shared/components/DeleteConfirmation/De
 import NoData from '../../../shared/components/NoData/NoData';
 import Modal from 'react-bootstrap/Modal';
 import { useForm } from 'react-hook-form';
+import noData from '../../../../images/confirmdelete.svg'
 
 
 const CategoriesList = () => {
   let{
     register,
-    formState:{errors},
+    reset,
+    formState:{errors , isSubmitting},
     handleSubmit,
     setValue
   }=useForm()
 
 
+  const [noOfPages , setNoOfPages] = useState([])
   const [showEdit, setShowEdit] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState(null); 
 
@@ -35,12 +38,13 @@ const CategoriesList = () => {
                 headers: { Authorization: localStorage.getItem("token") },
             });
             toast.success("Category updated successfully");
+            reset()
             handleCloseEdit()
             getCategoryItems(); 
         
     } catch (error) {
         console.error(error);
-        toast.error("Error updating category");
+        toast.error(response?.data?.data||"Error updating category");
     }
 };
 
@@ -67,11 +71,12 @@ const CategoriesList = () => {
           headers:{Authorization:localStorage.getItem("token")}
         }
       );
+      console.log(response?.data)
       toast.success("Successfully added category")
-      console.log(response.data.data);
+      reset()
       handleCloseAdd()
       getCategoryItems()
-      
+    
     } catch (error) {
       console.error(error);
     }
@@ -96,26 +101,33 @@ const CategoriesList = () => {
   }
 
   const[CategoryItems , setCategoryItems] = useState([])
-  let getCategoryItems= async () => {
+  let getCategoryItems= async ( pageNo , pageSize , name ) => {
     try {
-      const response =await axios.get("https://upskilling-egypt.com:3006/api/v1/Category/?pageSize=10&pageNumber=1",
+      const response =await axios.get("https://upskilling-egypt.com:3006/api/v1/Category/",
         {
+          params:{ name:name , pageSize:pageSize , pageNumber:pageNo },
           headers:{Authorization:localStorage.getItem("token")}
         }
       )
       console.log(response.data);
-      setCategoryItems(response.data.data)
+      setCategoryItems(response?.data?.data)
+      setNoOfPages(Array(response?.data?.totalNumberOfPages).fill().map((_,i) => i+1))
       
     } catch (error) {
       console.log(error)
     }
   }
+  let getNameValue = async(e) => {
+    getCategoryItems(1,5,e.target.value)
+    console.log(e.target.value)
+
+  }
 
   useEffect(()=>{
-    getCategoryItems()
+    getCategoryItems(1,8)
   },[])
   return (
-    <div>
+    <div className='category-container'>
       <Header first={"Categories"}
       title={"  item"}
       description={"You can now add your items that any user can order it from the Application and you can edit"}
@@ -145,7 +157,7 @@ const CategoriesList = () => {
                 aria-label="name"
                 aria-describedby="basic-addon1" 
                 {...register('name',{
-                  required: "please enter name"
+                  required: "please enter name", 
                 })
               }
                 />
@@ -153,12 +165,11 @@ const CategoriesList = () => {
                 {errors.name&&<span className="text-danger">{errors.name.message}</span>}
                 <div className='text-end'>
                 <button className='btn btn-success w-25 my-2'
+                disabled={isSubmitting}
                 >
-                Save
+                {isSubmitting? "Saving ..." : "Save"}
                 </button>
                 </div>
-                
-
           </form>
         </Modal.Body>
         </Modal>
@@ -186,8 +197,10 @@ const CategoriesList = () => {
 
               <div className="text-end">
                 <button className='btn btn-success w-25 my-2'
+                type='submit'
+                disabled={isSubmitting}
                 >
-                Save
+                {isSubmitting? "Saving ..." : "Save"}
                 </button>
               </div>
               
@@ -202,6 +215,16 @@ const CategoriesList = () => {
       <DeleteConfirmation deleteItem={"Categories"} deleteFun={deleteCategory}
       show={show} handleClose={handleClose} />
 
+      <div className='row mb-4'>
+      <div className='col-md-6'>
+        <input type='text' 
+        className='form-control' 
+        placeholder='Search Here'
+        onChange={getNameValue}
+        />
+      </div>
+      </div>
+
         <div className='table'>
           <table className="table">
           <thead>
@@ -214,20 +237,77 @@ const CategoriesList = () => {
           {CategoryItems.length > 0 ? (CategoryItems.map((category) =>
             <tr key={category.id} >
               <td>{category.name}</td>
-              <td className='text-success text-end'>
-                 <i className="fa-solid fa-eye"></i>
-                 <i className='fa fa-edit mx-3' onClick={() => handleShowEdit(category)} ></i>
-                 <i className='fa fa-trash'  onClick={()=>handleShow(category.id)}></i>
+              <td>
+              <div className="dropdown text-end">       
+              <i 
+                className="fa-solid fa-ellipsis text-center" 
+                type="button" 
+                data-bs-toggle="dropdown" 
+                aria-expanded="false">
+              </i>
+            
+              <ul className="dropdown-menu">
+                <li className="dropdown-item">
+                  <i className="fa-solid fa-eye text-success"></i> View
+                </li>
+                <li 
+                  className="dropdown-item" onClick={() => handleShowEdit(category)}>
+                  <i className='fa fa-edit text-success'></i> Edit
+                </li>
+                <li className="dropdown-item" onClick={()=>handleShow(category.id)}>
+                  <i className='fa fa-trash text-success' ></i> Delete
+               </li>
+              </ul>
+              </div>
+            
               </td>
             </tr>
 
           )): (
-            <NoData />
+            <tr>
+            <td colSpan="6">
+                <div className="noData">
+                  <img src={noData} alt="No data" />
+                  <h3>No Data!</h3>
+                </div>
+            </td>
+          </tr>
           )
         }
           </tbody>
         </table>
         </div>
+
+        {CategoryItems.length > 0?(
+        <nav aria-label="Page navigation example">
+        <ul className="pagination justify-content-center">
+          <li className="page-item">
+            <a className="page-link" href="#" aria-label="Previous">
+              <span aria-hidden="true">&laquo;</span>
+            </a>
+          </li>
+          {noOfPages.map((noPage) => (
+              <li className="page-item" key={noPage} onClick={() => getCategoryItems(noPage , 8)}>
+              <a className="page-link" href="#">
+              {noPage}
+              </a></li>
+           ))}
+        
+
+          <li className="page-item">
+            <a className="page-link" href="#" aria-label="Next">
+              <span aria-hidden="true">&raquo;</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+          ):(
+            ""
+          )
+        }
+       
+ 
+       
     </div>
     
   )

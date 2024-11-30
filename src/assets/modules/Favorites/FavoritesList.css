@@ -1,0 +1,24 @@
+.card{
+    position: relative;
+    border-radius: 20px;
+    box-shadow: 4px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    border: 0;
+    height: 350px;
+}
+.card i{
+    position: absolute;
+    right: 0;
+    top: 0;
+    margin:20px 20px 0 0;
+    border: 2px solid black;
+    background-color: aliceblue;
+    font-size: 12px;
+    padding: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.card img{
+    border-radius:20px;
+    width: 100%;
+    height: 200px;
+}

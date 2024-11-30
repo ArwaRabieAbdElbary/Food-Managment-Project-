@@ -1,16 +1,19 @@
-import React from 'react'
+import React, { useContext, useState } from 'react'
 import logo from '../../../../images/logo.png'
 import { Link, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import axios from 'axios'
 import { toast } from 'react-toastify';
+import { AuthContext } from '../../../../context/AuthContext'
 
-const Login = ({saveLoginData}) => {
+const Login = () => {
+  const[isVisible , setIsVisible]=useState("")
+  let {saveLoginData} = useContext(AuthContext)
   let navigate = useNavigate()
 
   let{
     register,
-    formState:{errors},
+    formState:{errors , isSubmitting},
     handleSubmit,
   }=useForm()
 
@@ -19,7 +22,7 @@ const Login = ({saveLoginData}) => {
       let response = await axios.post("https://upskilling-egypt.com:3006/api/v1/Users/Login" , data)
       navigate('/dashboard')
       toast.success('Login Successfully')
-      localStorage.setItem('token',response.data.token)
+      localStorage.setItem('token',response?.data?.token)
       saveLoginData()
 
     } catch (error) {
@@ -60,13 +63,15 @@ const Login = ({saveLoginData}) => {
                         })}
                         />
                     </div>
-                    {errors.email&&<span className="text-danger">{errors.email.message}</span>}
+                    {errors.email&&<span className="text-danger error-span">{errors.email.message}</span>}
+
+                    
                  
                     <div className="input-group mb-3">
                       <span className="input-group-text" id="basic-addon1">
                         <i className='fa fa-key text-muted'></i>
                       </span>
-                      <input type="password"
+                      <input type={isVisible? 'text' :'password'}
                         className="form-control"
                         placeholder="Password"
                         aria-label="password"
@@ -75,16 +80,26 @@ const Login = ({saveLoginData}) => {
                           required: 'Please enter password',
                         })}
                         />
+                        <button type='button'
+                        onMouseDown={(e) => e.preventDefault()}
+                        onMouseUp={(e) => e.preventDefault()}
+                        onClick={()=> (setIsVisible(!isVisible))}
+                         className="input-group-text eye-btn"
+                          id="basic-addon1">
+                          {isVisible?<i className='fa-solid fa-eye-slash text-muted'></i> :
+                            <i className='fa-solid fa-eye text-muted'></i>}
+                        </button>
                     </div>
-                    {errors.password&&<span className="text-danger">{errors.password.message}</span>}
+                    {errors.password&&<span className="text-danger error-span">{errors.password.message}</span>}
                     
                     
                     <div className='links d-flex justify-content-between'>
                       <Link to='/register' className='text-decoration-none text-black'>Register Now?</Link>
                       <Link to='/forget-password' className='text-decoration-none text-success'>Forgot Password?</Link>
                     </div>
-                    <button className='btn btn-success w-100 my-4'>
-                    Login</button>
+                    <button disabled={isSubmitting} className='btn btn-success w-100 my-4'>
+                    {isSubmitting? "Loading ..." : "Login"}
+                    </button>
                  
                  </form>
                  
